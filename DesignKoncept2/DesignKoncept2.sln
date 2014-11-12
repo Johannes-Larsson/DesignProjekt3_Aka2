@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignKoncept2", "DesignKoncept2\DesignKoncept2\DesignKoncept2.csproj", "{F5F4B694-13C3-4459-859F-92D35F67B3E8}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "DesignKoncept2Content", "DesignKoncept2\DesignKoncept2Content\DesignKoncept2Content.contentproj", "{82C0A6D6-69B2-4512-B131-013C270481DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5F4B694-13C3-4459-859F-92D35F67B3E8}.Debug|x86.ActiveCfg = Debug|x86
+		{F5F4B694-13C3-4459-859F-92D35F67B3E8}.Debug|x86.Build.0 = Debug|x86
+		{F5F4B694-13C3-4459-859F-92D35F67B3E8}.Release|x86.ActiveCfg = Release|x86
+		{F5F4B694-13C3-4459-859F-92D35F67B3E8}.Release|x86.Build.0 = Release|x86
+		{82C0A6D6-69B2-4512-B131-013C270481DB}.Debug|x86.ActiveCfg = Debug|x86
+		{82C0A6D6-69B2-4512-B131-013C270481DB}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
