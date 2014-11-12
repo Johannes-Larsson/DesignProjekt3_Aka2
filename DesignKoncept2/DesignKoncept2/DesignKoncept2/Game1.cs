@@ -17,10 +17,13 @@ namespace DesignKoncept2
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        enum GameState { Menu, Game, Over } ;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
         MouseState ms, oms;
+        GameState gameState;
 
         Gem selectedGem1, selectedGem2;
 
@@ -48,6 +51,7 @@ namespace DesignKoncept2
             // TODO: Add your initialization logic here
             Board.Initialize();
             oms = Mouse.GetState();
+            gameState = GameState.Menu;
             base.Initialize();
         }
 
@@ -80,40 +84,48 @@ namespace DesignKoncept2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Initialize();
             ms = Mouse.GetState();
-            if (Board.CanMakeMove())
+
+            switch (gameState)
             {
-                Board.Combo = 0;
-                if (ms.LeftButton == ButtonState.Pressed && Board.PointIsOnBoard(ms.X, ms.Y))
-                {
-                    Gem clickedGem = Board.Gems[ms.X / Board.GemSize, ms.Y / Board.GemSize];
-                    if (oms.LeftButton == ButtonState.Released) selectedGem1 = clickedGem;
-                    else if (selectedGem1 != clickedGem && selectedGem2 == null)
+                case GameState.Game:
+                    if (Board.CanMakeMove())
                     {
-                        selectedGem2 = clickedGem;
-                        Color tmp = selectedGem2.Color;
-                        selectedGem2.Color = selectedGem1.Color;
-                        selectedGem1.Color = tmp;
-                        /*Debug.WriteLine("handling shape " + selectedGem2.Shape);
-                        Board.HandleChunk(selectedGem2);
-                        Debug.WriteLine("handling shape " + selectedGem1.Shape);
-                        Board.HandleChunk(selectedGem1);*/
-                        selectedGem1.StartDestroy();
-                        selectedGem2.StartDestroy();
+                        Board.Combo = 0;
+                        if (ms.LeftButton == ButtonState.Pressed && Board.PointIsOnBoard(ms.X, ms.Y))
+                        {
+                            Gem clickedGem = Board.Gems[ms.X / Board.GemSize, ms.Y / Board.GemSize];
+                            if (oms.LeftButton == ButtonState.Released) selectedGem1 = clickedGem;
+                            else if (selectedGem1 != clickedGem && selectedGem2 == null)
+                            {
+                                selectedGem2 = clickedGem;
+                                Color tmp = selectedGem2.Color;
+                                selectedGem2.Color = selectedGem1.Color;//gem1 = null om man h[ller inne fr[n menyn, pga oms.lb = pressed
+                                selectedGem1.Color = tmp;
+                                selectedGem1.StartDestroy();
+                                selectedGem2.StartDestroy();
+                            }
+                        }
+                        else
+                        {
+                            selectedGem2 = null;
+                            selectedGem1 = null;
+                        }
                     }
-                    //foreach (Gem g in Board.GetSimilarGemChunk(clickedGem)) g.color = Color.Black;
-                }
-                else
-                {
-                    selectedGem2 = null;
-                    selectedGem1 = null;
-                }
+
+                    Board.Update();
+                    break;
+
+                case GameState.Menu:
+                    if (ms.LeftButton == ButtonState.Pressed) gameState = GameState.Game;
+                    break;
+
+                case GameState.Over:
+                    break;
             }
 
-            Board.Update();
-
             oms = ms;
+
             base.Update(gameTime);
         }
 
@@ -130,11 +142,23 @@ namespace DesignKoncept2
         {
             GraphicsDevice.Clear(Color.DarkGray);
             spriteBatch.Begin();
-
-            Board.Draw(spriteBatch);
-            spriteBatch.DrawString(font, Board.Combo.ToString(), new Vector2(0, ScreenSize.Y - 90), Color.White);
-            spriteBatch.DrawString(font, Board.DestroyedTiles.ToString(), new Vector2(ScreenSize.X - font.MeasureString(Board.DestroyedTiles.ToString()).X, ScreenSize.Y - 90), Color.White);
-            spriteBatch.DrawString(font, Board.Score.ToString(), new Vector2(ScreenSize.X / 2 - font.MeasureString(Board.Score.ToString()).X / 2, ScreenSize.Y - 90), Color.White);
+            switch (gameState)
+            {
+                case GameState.Game:
+                    Board.Draw(spriteBatch);
+                    spriteBatch.DrawString(font, Board.Combo.ToString(), new Vector2(0, ScreenSize.Y - 90), Color.White);
+                    spriteBatch.DrawString(font, Board.DestroyedTiles.ToString(), new Vector2(ScreenSize.X - font.MeasureString(Board.DestroyedTiles.ToString()).X, ScreenSize.Y - 90), Color.White);
+                    spriteBatch.DrawString(font, Board.Score.ToString(), new Vector2(ScreenSize.X / 2 - font.MeasureString(Board.Score.ToString()).X / 2, ScreenSize.Y - 90), Color.White);
+                    break;
+                    
+                case GameState.Menu:
+                    string s = "click to start game";
+                    spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2, Color.White); 
+                    break;
+                    
+                case GameState.Over:
+                    break;
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);

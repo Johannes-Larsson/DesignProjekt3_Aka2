@@ -13,3 +13,11 @@ C:\Users\Johannes\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\
 C:\Users\Johannes\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\obj\x86\Debug\DesignKoncept2.exe
 C:\Users\Johannes\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\obj\x86\Debug\DesignKoncept2.pdb
 C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\font.xnb
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\gems.xnb
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\font.xnb
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\DesignKoncept2.exe
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\DesignKoncept2.pdb
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\obj\x86\Debug\DesignKoncept2.csprojResolveAssemblyReference.cache
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\obj\x86\Debug\DesignKoncept2.exe
+C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\obj\x86\Debug\DesignKoncept2.pdb

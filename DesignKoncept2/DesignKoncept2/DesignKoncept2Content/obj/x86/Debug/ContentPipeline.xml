@@ -7,7 +7,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\gems.xnb</Output>
+      <Output>C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\gems.xnb</Output>
       <Time>2014-11-12T10:12:36.9934848+01:00</Time>
     </Item>
     <Item>
@@ -16,7 +16,7 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\font.xnb</Output>
+      <Output>C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\font.xnb</Output>
       <Time>2014-11-11T14:49:12.755925+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
@@ -25,10 +25,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2Content\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2Content\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignKoncept2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\sul13ajohannesl\Documents\GitHub\DesignProjekt3_Aka2\DesignKoncept2\DesignKoncept2\DesignKoncept2\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
