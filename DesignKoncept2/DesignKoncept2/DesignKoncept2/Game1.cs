@@ -20,17 +20,21 @@ namespace DesignKoncept2
         enum GameState { Menu, Game, Over } ;
 
         public static SpriteFont font;
+        public static MouseState ms, oms;
 
+		Menu gameOverMenuSucces, gameOverMenuFail;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        MouseState ms, oms;
         GameState gameState;
+		bool completedLevel;
 
         Gem selectedGem1, selectedGem2;
 
         public static Point ScreenSize { get { return new Point(Board.BoardSizePx.X, Board.BoardSizePx.Y + 100); } } 
 
         public static Texture2D gemTextures;
+
+		int time;
 
         public Game1()
         {
@@ -56,6 +60,12 @@ namespace DesignKoncept2
             base.Initialize();
         }
 
+		void StartGame()
+		{
+			gameState = GameState.Game;
+			time = 8* 60; // n * 60 where n is seconds, ie time is in frames
+		}
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -66,6 +76,9 @@ namespace DesignKoncept2
             spriteBatch = new SpriteBatch(GraphicsDevice);
             gemTextures = Content.Load<Texture2D>("gems");
             font = Content.Load<SpriteFont>("font");
+
+			gameOverMenuSucces = new Menu(new string[] { "give your left over time to a friend", "play next level", "view highscores", "quit game" }, new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2 - 100));
+			gameOverMenuFail = new Menu(new string[] { "try again", "view highscores", "quit game" }, new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2 - 100)); 
             // TODO: use this.Content to load your game content here
         }
 
@@ -90,35 +103,41 @@ namespace DesignKoncept2
             switch (gameState)
             {
                 case GameState.Game:
+					time -= 1;
+					if (time < 0) time = 0;
                     if (Board.CanMakeMove())
                     {
-                        Board.Combo = 0;
-                        if (ms.LeftButton == ButtonState.Pressed && Board.PointIsOnBoard(ms.X, ms.Y))
-                        {
-                            Gem clickedGem = Board.Gems[ms.X / Board.GemSize, ms.Y / Board.GemSize];
-                            if (selectedGem1 == null) selectedGem1 = clickedGem;
-                            else if (selectedGem1 != clickedGem && selectedGem2 == null)
-                            {
-                                selectedGem2 = clickedGem;
-                                Color tmp = selectedGem2.Color;
-                                selectedGem2.Color = selectedGem1.Color;//gem1 = null om man h[ller inne fr[n menyn, pga oms.lb = pressed
-                                selectedGem1.Color = tmp;
-                                selectedGem1.StartDestroy();
-                                selectedGem2.StartDestroy();
-                            }
-                        }
-                        else
-                        {
-                            selectedGem2 = null;
-                            selectedGem1 = null;
-                        }
+						if (time > 0)
+						{
+							Board.Combo = 0;
+							if (ms.LeftButton == ButtonState.Pressed && Board.PointIsOnBoard(ms.X, ms.Y))
+							{
+								Gem clickedGem = Board.Gems[ms.X / Board.GemSize, ms.Y / Board.GemSize];
+								if (selectedGem1 == null) selectedGem1 = clickedGem;
+								else if (selectedGem1 != clickedGem && selectedGem2 == null)
+								{
+									selectedGem2 = clickedGem;
+									Color tmp = selectedGem2.Color;
+									selectedGem2.Color = selectedGem1.Color;
+									selectedGem1.Color = tmp;
+									selectedGem1.StartDestroy();
+									selectedGem2.StartDestroy();
+								}
+							}
+							else
+							{
+								selectedGem2 = null;
+								selectedGem1 = null;
+							}
+						}
+						else gameState = GameState.Over;
                     }
 
                     Board.Update();
                     break;
 
                 case GameState.Menu:
-                    if (ms.LeftButton == ButtonState.Pressed) gameState = GameState.Game;
+					if (ms.LeftButton == ButtonState.Pressed) StartGame();
                     break;
 
                 case GameState.Over:
@@ -150,19 +169,32 @@ namespace DesignKoncept2
                     spriteBatch.DrawString(font, Board.Combo.ToString(), new Vector2(0, ScreenSize.Y - 90), Color.White);
                     spriteBatch.DrawString(font, Board.DestroyedTiles.ToString(), new Vector2(ScreenSize.X - font.MeasureString(Board.DestroyedTiles.ToString()).X, ScreenSize.Y - 90), Color.White);
                     spriteBatch.DrawString(font, Board.Score.ToString(), new Vector2(ScreenSize.X / 2 - font.MeasureString(Board.Score.ToString()).X / 2, ScreenSize.Y - 90), Color.White);
+					string timeString  = (time/ 60f).ToString("0.0");
+					Color c = (time < 3 * 60 && time % 60 > 30) ? Color.Red : Color.White;
+					spriteBatch.DrawString(font, timeString, new Vector2(ScreenSize.X / 2, ScreenSize.Y - 40) - font.MeasureString(timeString) / 2, c);
                     break;
                     
                 case GameState.Menu:
-                    string s = "click to start game";
-                    spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2, Color.White); 
+					DrawCenteredString("click to start");
                     break;
                     
                 case GameState.Over:
+					if (completedLevel) gameOverMenuSucces.Draw(spriteBatch);
+					else gameOverMenuFail.Draw(spriteBatch);
                     break;
             }
 
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+		void DrawCenteredString(string s)
+		{
+			spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2, Color.White); 
+		}
+		void DrawCenteredString(string s, Vector2 offset)
+		{
+			spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2 + offset * font.MeasureString(s), Color.White);
+		}
     }
 }
