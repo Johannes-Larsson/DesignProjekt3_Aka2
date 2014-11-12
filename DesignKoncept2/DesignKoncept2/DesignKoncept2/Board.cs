@@ -16,11 +16,13 @@ namespace DesignKoncept2
         public static int GemSize { get { return 64; } }
         public static int Combo { get; set; }
         public static int DestroyedTiles { get; set; }
-        public static int Score { get; set; }
+		public static int Score { get; set; }
+		public static List<FloatingText> FloatingTexts { get; set; }
 
         public static void Initialize()
         {
             Gems = new Gem[BoardSizeTiles.X, BoardSizeTiles.Y];
+			FloatingTexts = new List<FloatingText>();
             Random r = new Random();
             for (int x = 0; x < BoardSizeTiles.X; x++)
             {
@@ -30,6 +32,12 @@ namespace DesignKoncept2
                 }
             }
         }
+
+		public static void AddScore(int value)
+		{
+			Score += value; 
+			FloatingTexts.Add(new FloatingText(20, value.ToString(), Color.White, new Vector2(Game1.ScreenSize.X / 2, Game1.ScreenSize.Y - 90))); 
+		}
 
         public static List<Gem> AdjacentGems(Gem g)
         {
@@ -65,14 +73,16 @@ namespace DesignKoncept2
         {
             Random r = new Random();
             foreach (Gem g in Gems) g.Update(r);
+			for (int i = FloatingTexts.Count - 1; i >= 0; i--)
+			{
+				if (FloatingTexts[i].Destroy) FloatingTexts.RemoveAt(i);
+			}
         }
 
         public static void Draw(SpriteBatch batch)
         {
-            foreach (Gem g in Gems)
-            {
-                g.Draw(batch);
-            }
+            foreach (Gem g in Gems) g.Draw(batch);
+			foreach (FloatingText t in FloatingTexts) t.Draw(batch);
         }
     }
 }

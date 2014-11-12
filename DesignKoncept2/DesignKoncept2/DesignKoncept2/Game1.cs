@@ -19,9 +19,10 @@ namespace DesignKoncept2
     {
         enum GameState { Menu, Game, Over } ;
 
+        public static SpriteFont font;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        SpriteFont font;
         MouseState ms, oms;
         GameState gameState;
 
@@ -95,7 +96,7 @@ namespace DesignKoncept2
                         if (ms.LeftButton == ButtonState.Pressed && Board.PointIsOnBoard(ms.X, ms.Y))
                         {
                             Gem clickedGem = Board.Gems[ms.X / Board.GemSize, ms.Y / Board.GemSize];
-                            if (oms.LeftButton == ButtonState.Released) selectedGem1 = clickedGem;
+                            if (selectedGem1 == null) selectedGem1 = clickedGem;
                             else if (selectedGem1 != clickedGem && selectedGem2 == null)
                             {
                                 selectedGem2 = clickedGem;

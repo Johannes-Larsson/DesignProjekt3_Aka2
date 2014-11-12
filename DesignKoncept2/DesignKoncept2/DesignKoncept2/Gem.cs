@@ -60,11 +60,12 @@ namespace DesignKoncept2
             if (destroyCounter == maxDestroy) //on destroy
             {
                 Destroy = false;
+				Board.FloatingTexts.Add(new FloatingText(30, (Board.Combo + 1).ToString() + "x", Color, Position));
                 foreach (Gem g in Board.AdjacentGems(this)) if(g.Color == Color) g.Destroy = true;
                 AssignNewShape(r, false);
                 Board.Combo++;
                 Board.DestroyedTiles++;
-                Board.Score += Board.Combo;
+				Board.AddScore(Board.Combo);
             }
 
             if (alpha < 1) blinkTime++;
