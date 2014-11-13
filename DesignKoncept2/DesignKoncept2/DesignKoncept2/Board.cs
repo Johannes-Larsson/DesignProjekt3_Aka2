@@ -17,7 +17,17 @@ namespace DesignKoncept2
         public static int Combo { get; set; }
         public static int DestroyedTiles { get; set; }
 		public static int Score { get; set; }
-		public static List<FloatingText> FloatingTexts { get; set; }
+        public static List<FloatingText> FloatingTexts { get; set; }
+        public static bool LevelCompleted
+        {
+            get
+            {
+                return (DestroyedTiles > TileGoal);
+            }
+        }
+        public static int Time { get; set; }
+        public static int TileGoal { get; set; }
+        public static int Level { get; set; }
 
         public static void Initialize()
         {
@@ -31,6 +41,13 @@ namespace DesignKoncept2
                     Gems[x, y] = new Gem(new Vector2(x * GemSize, y * GemSize), r);
                 }
             }
+        }
+
+        public static void InitializeLevel()
+        {
+            if(LevelCompleted) Level++;
+            TileGoal = (int)(30 * Math.Pow(1.2f, Level));
+            DestroyedTiles = 0;
         }
 
 		public static void AddScore(int value)

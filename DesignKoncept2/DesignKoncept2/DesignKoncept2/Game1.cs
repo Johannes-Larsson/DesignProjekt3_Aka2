@@ -17,16 +17,15 @@ namespace DesignKoncept2
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        enum GameState { Menu, Game, Over } ;
+        enum GameState { Menu, About, PreGame, Game, Over } ;
 
         public static SpriteFont font;
         public static MouseState ms, oms;
 
-		Menu gameOverMenuSucces, gameOverMenuFail;
+        Menu gameOverMenuSucces, gameOverMenuFail, startMenu, aboutMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameState gameState;
-		bool completedLevel;
 
         Gem selectedGem1, selectedGem2;
 
@@ -62,8 +61,9 @@ namespace DesignKoncept2
 
 		void StartGame()
 		{
-			gameState = GameState.Game;
-			time = 8* 60; // n * 60 where n is seconds, ie time is in frames
+			gameState = GameState.PreGame;
+			time = 30 * 60; // n * 60 where n is seconds, ie time is in frames
+            Board.InitializeLevel();
 		}
 
         /// <summary>
@@ -77,8 +77,10 @@ namespace DesignKoncept2
             gemTextures = Content.Load<Texture2D>("gems");
             font = Content.Load<SpriteFont>("font");
 
-			gameOverMenuSucces = new Menu(new string[] { "give your left over time to a friend", "play next level", "view highscores", "quit game" }, new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2 - 100));
-			gameOverMenuFail = new Menu(new string[] { "try again", "view highscores", "quit game" }, new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2 - 100)); 
+			gameOverMenuSucces = new Menu(new string[] { "", "play next level", "view highscores", "quit game" }, new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2 - 100));
+			gameOverMenuFail = new Menu(new string[] { "use time given to you", "try again", "view highscores", "quit game" }, new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2 - 100));
+            startMenu = new Menu(new string[] { "play game", "about the game", "quit" }, new Vector2(ScreenSize.X, ScreenSize.Y) / 2);
+            aboutMenu = new Menu(new string[] { "back" }, new Vector2(ScreenSize.X, ScreenSize.Y * 1.6f) / 2);
             // TODO: use this.Content to load your game content here
         }
 
@@ -107,7 +109,7 @@ namespace DesignKoncept2
 					if (time < 0) time = 0;
                     if (Board.CanMakeMove())
                     {
-						if (time > 0)
+						if (time > 0 && !Board.LevelCompleted)
 						{
 							Board.Combo = 0;
 							if (ms.LeftButton == ButtonState.Pressed && Board.PointIsOnBoard(ms.X, ms.Y))
@@ -136,11 +138,32 @@ namespace DesignKoncept2
                     Board.Update();
                     break;
 
+                case GameState.PreGame:
+                    if (ms.LeftButton == ButtonState.Pressed && oms.LeftButton == ButtonState.Released) gameState = GameState.Game;
+                    break;
+
+                case GameState.About:
+                    if (aboutMenu.Buttons[0].IsClicked) gameState = GameState.Menu;
+                    break;
+
                 case GameState.Menu:
-					if (ms.LeftButton == ButtonState.Pressed) StartGame();
+                    if (startMenu.Buttons[0].IsClicked) StartGame();
+                    if (startMenu.Buttons[1].IsClicked) gameState = GameState.About;
+                    if (startMenu.Buttons[2].IsClicked) Exit();
                     break;
 
                 case GameState.Over:
+                    if (Board.LevelCompleted)
+                    {
+                        gameOverMenuSucces.Buttons[0].Text = "give " + time / 60 + "s to a friend";
+                        if (gameOverMenuSucces.Buttons[1].IsClicked) StartGame();
+                        else if (gameOverMenuSucces.Buttons[3].IsClicked) Exit();
+                    }
+                    else 
+                    {
+                        if (gameOverMenuFail.Buttons[1].IsClicked) StartGame();
+                        else if (gameOverMenuFail.Buttons[3].IsClicked) Exit();
+                    }
                     break;
             }
 
@@ -166,21 +189,45 @@ namespace DesignKoncept2
             {
                 case GameState.Game:
                     Board.Draw(spriteBatch);
-                    spriteBatch.DrawString(font, Board.Combo.ToString(), new Vector2(0, ScreenSize.Y - 90), Color.White);
-                    spriteBatch.DrawString(font, Board.DestroyedTiles.ToString(), new Vector2(ScreenSize.X - font.MeasureString(Board.DestroyedTiles.ToString()).X, ScreenSize.Y - 90), Color.White);
-                    spriteBatch.DrawString(font, Board.Score.ToString(), new Vector2(ScreenSize.X / 2 - font.MeasureString(Board.Score.ToString()).X / 2, ScreenSize.Y - 90), Color.White);
+                    spriteBatch.DrawString(font, "Gem goal: " + Board.TileGoal.ToString(), new Vector2(0, ScreenSize.Y - 40), Color.White);
+                    string dt = "Destroyed Gems: " + Board.DestroyedTiles.ToString();
+                    spriteBatch.DrawString(font, dt, new Vector2(ScreenSize.X - font.MeasureString(dt).X, ScreenSize.Y - 40), Color.White);
+
+                    string score = "score: " + Board.Score.ToString();
+                    spriteBatch.DrawString(font, score, new Vector2(ScreenSize.X - font.MeasureString(score).X, ScreenSize.Y - 90), Color.White);
+
 					string timeString  = (time/ 60f).ToString("0.0");
 					Color c = (time < 3 * 60 && time % 60 > 30) ? Color.Red : Color.White;
-					spriteBatch.DrawString(font, timeString, new Vector2(ScreenSize.X / 2, ScreenSize.Y - 40) - font.MeasureString(timeString) / 2, c);
+                    spriteBatch.DrawString(font, timeString, new Vector2(ScreenSize.X / 2 - font.MeasureString(timeString).X / 2, ScreenSize.Y - 90), c);
+
+                    spriteBatch.DrawString(font, "Level: " + Board.Level, new Vector2(0, ScreenSize.Y - 90), Color.White);
+                    break;
+
+                case GameState.PreGame:
+                    DrawCenteredString("destroy " + Board.TileGoal + " tiles", new Vector2(0, -.5f));
+                    DrawCenteredString("click anywhere to start", new Vector2(0, .5f));
                     break;
                     
                 case GameState.Menu:
-					DrawCenteredString("click to start");
+                    startMenu.Draw(spriteBatch);
+                    break;
+
+                case GameState.About:
+                    aboutMenu.Draw(spriteBatch);
+                    DrawCenteredStrings(new string[] {"drag two tiles to", "make them switch place", "chunks of the same color", "will be destroyed", "destroy a set amount", "to complete the level", "send left over time to friends", "or use time sent to you", "to complete the level if you fail", "(some features don't work", "since this is a prototype)" } );
                     break;
                     
                 case GameState.Over:
-					if (completedLevel) gameOverMenuSucces.Draw(spriteBatch);
-					else gameOverMenuFail.Draw(spriteBatch);
+                    if (Board.LevelCompleted)
+                    {
+                        DrawCenteredString("you scored " + Board.Score + " on level " + (Board.Level + 1), new Vector2(0, -5));
+                        gameOverMenuSucces.Draw(spriteBatch);
+                    }
+                    else
+                    {
+                        DrawCenteredString("you need " + (Board.TileGoal - Board.DestroyedTiles).ToString() + " more tiles", new Vector2(0, -5f));
+                        gameOverMenuFail.Draw(spriteBatch);
+                    }
                     break;
             }
 
@@ -190,11 +237,20 @@ namespace DesignKoncept2
 
 		void DrawCenteredString(string s)
 		{
-			spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2, Color.White); 
+            DrawCenteredString(s, Vector2.Zero);
 		}
+
 		void DrawCenteredString(string s, Vector2 offset)
 		{
-			spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2 + offset * font.MeasureString(s), Color.White);
+			spriteBatch.DrawString(font, s, (new Vector2(ScreenSize.X, ScreenSize.Y) - font.MeasureString(s)) / 2 + offset * font.MeasureString(s), Color.LightGray);
 		}
+
+        void DrawCenteredStrings(string[] strings)
+        {
+            for (int i = 0; i < strings.Length; i++)
+            {
+                DrawCenteredString(strings[i], new Vector2(0, i - (strings.Length - 1)/ 2));
+            }
+        }
     }
 }

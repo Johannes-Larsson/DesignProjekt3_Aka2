@@ -14,7 +14,7 @@ namespace DesignKoncept2
         bool destroy;
         public bool Destroy { get { return destroy; } set { destroy = value; destroyCounter = (value) ? 1 : 0; } }
         int destroyCounter;
-        const int maxDestroy = 20;
+        const int maxDestroy = 12;
 
         public enum GemShape { Blue = 0, Pink = 1, Green = 2, Brown = 3, White = 4}
 

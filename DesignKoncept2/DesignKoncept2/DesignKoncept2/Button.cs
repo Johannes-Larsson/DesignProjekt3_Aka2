@@ -10,11 +10,11 @@ namespace DesignKoncept2
 {
 	class Button
 	{
-		string text;
+        public string Text { get; set; }
 		Vector2 position;
-		Vector2 centeredPos { get { return position - Game1.font.MeasureString(text) / 2; } }
+		Vector2 centeredPos { get { return position - Game1.font.MeasureString(Text) / 2; } }
 		Rectangle rectangle { get { 
-			Vector2 centering = Game1.font.MeasureString(text) / 2;
+			Vector2 centering = Game1.font.MeasureString(Text) / 2;
 			Vector2 absPos = position - centering;
 			centering *= 2;
 			return new Rectangle((int)absPos.X, (int)absPos.Y, (int)centering.X, (int)centering.Y);
@@ -41,13 +41,13 @@ namespace DesignKoncept2
 		public Button(Vector2 position, string text)
 		{
 			this.position = position;
-			this.text = text;
+			this.Text = text;
 		}
 
 		public void Draw(SpriteBatch batch)
 		{
 			Color c = (mouseIsOver) ? Color.White : Color.LightGray; 
-			batch.DrawString(Game1.font, text, centeredPos, c);
+			batch.DrawString(Game1.font, Text, centeredPos, c);
 		}
 	}
 }
