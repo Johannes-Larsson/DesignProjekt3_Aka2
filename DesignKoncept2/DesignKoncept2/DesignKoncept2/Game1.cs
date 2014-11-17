@@ -62,7 +62,7 @@ namespace DesignKoncept2
 		void StartGame()
 		{
 			gameState = GameState.PreGame;
-			time = 30 * 60; // n * 60 where n is seconds, ie time is in frames
+			time = 10 * 60; // n * 60 where n is seconds, ie time is in frames
             Board.InitializeLevel();
 		}
 
@@ -183,7 +183,9 @@ namespace DesignKoncept2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkGray);
+            Color backgroundColor = Color.DarkGray;
+            if (gameState == GameState.Game && !Board.CanMakeMove()) backgroundColor = Color.OrangeRed;
+            GraphicsDevice.Clear(backgroundColor);
             spriteBatch.Begin();
             switch (gameState)
             {

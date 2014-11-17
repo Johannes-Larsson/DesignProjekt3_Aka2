@@ -46,7 +46,7 @@ namespace DesignKoncept2
         public static void InitializeLevel()
         {
             if(LevelCompleted) Level++;
-            TileGoal = (int)(30 * Math.Pow(1.2f, Level));
+            TileGoal = (int)(30 * Math.Pow(1.15f, Level));
             DestroyedTiles = 0;
         }
 
@@ -82,8 +82,7 @@ namespace DesignKoncept2
 
         public static bool PointIsOnBoard(int x, int y)
         {
-            if (x >= 0 && x < BoardSizePx.X && y >= 0 && y < BoardSizePx.Y) return true;
-            else return false;
+            return (x >= 0 && x < BoardSizePx.X && y >= 0 && y < BoardSizePx.Y);
         }
 
         public static void Update()
